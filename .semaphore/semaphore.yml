@@ -34,13 +34,13 @@ blocks:
         - name: dockerhub
       prologue:
         commands:
-          - 'checkout '
+          - checkout
           - cp env-example .env
           - cat docker-compose.test.yml | envsubst | tee docker-compose.yml
           - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
-          - 'docker pull $DOCKER_USERNAME/dockerizing-ruby-drkiq:latest || true'
-          - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rake db:reset'
-          - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rake db:migrate'
+          - 'docker pull $DOCKER_USERNAME/portal:latest || true'
+          - 'docker-compose run --user "$(id -u):$(id -g)" portal rake db:reset'
+          - 'docker-compose run --user "$(id -u):$(id -g)" portal rake db:migrate'
       jobs:
         - name: Rails Test
           commands:
