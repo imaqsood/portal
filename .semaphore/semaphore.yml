@@ -44,4 +44,4 @@ blocks:
       jobs:
         - name: Rails Test
           commands:
-            - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rails test'
+            - 'docker-compose run --user "$(id -u):$(id -g)" portal rails test'
