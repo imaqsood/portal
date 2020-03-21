@@ -5,14 +5,19 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Docker
+  - name: Build
     task:
       jobs:
-        - name: docker build
+        - name: Build Portal
           commands:
             - 'docker pull $DOCKER_USERNAME/portal:latest || true'
             - 'docker build -t $DOCKER_USERNAME/portal:latest --cache-from=$DOCKER_USERNAME/portal:latest --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile.production .'
             - 'docker push $DOCKER_USERNAME/portal:latest'
+        - name: Build nginx
+          commands:
+            - 'docker pull $DOCKER_USERNAME/portal-nginx:latest || true'
+            - 'docker build -t $DOCKER_USERNAME/portal-nginx:latest --cache-from=$DOCKER_USERNAME/portal-nginx:latest -f Dockerfile.nginx .'
+            - 'docker push $DOCKER_USERNAME/portal-nginx:latest'
       secrets:
         - name: dockerhub
       prologue:
@@ -23,3 +28,20 @@ blocks:
         machine:
           type: e1-standard-2
           os_image: ubuntu1804
+  - name: Tests
+    task:
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          - 'checkout '
+          - cp env-example .env
+          - cat docker-compose.test.yml | envsubst | tee docker-compose.yml
+          - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+          - 'docker pull $DOCKER_USERNAME/dockerizing-ruby-drkiq:latest || true'
+          - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rake db:reset'
+          - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rake db:migrate'
+      jobs:
+        - name: Rails Test
+          commands:
+            - 'docker-compose run --user "$(id -u):$(id -g)" drkiq rails test'
