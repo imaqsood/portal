@@ -1,0 +1,47 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Build
+    task:
+      jobs:
+        - name: Build Portal
+          commands:
+            - 'docker pull $DOCKER_USERNAME/portal:latest || true'
+            - 'docker build -t $DOCKER_USERNAME/portal:latest --cache-from=$DOCKER_USERNAME/portal:latest --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile.production .'
+            - 'docker push $DOCKER_USERNAME/portal:latest'
+        - name: Build nginx
+          commands:
+            - 'docker pull $DOCKER_USERNAME/portal-nginx:latest || true'
+            - 'docker build -t $DOCKER_USERNAME/portal-nginx:latest --cache-from=$DOCKER_USERNAME/portal-nginx:latest -f Dockerfile.nginx .'
+            - 'docker push $DOCKER_USERNAME/portal-nginx:latest'
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          - checkout
+          - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+      agent:
+        machine:
+          type: e1-standard-2
+          os_image: ubuntu1804
+  - name: Tests
+    task:
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          - checkout
+          - cp env-example .env
+          - cat docker-compose.test.yml | envsubst | tee docker-compose.yml
+          - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+          - 'docker pull $DOCKER_USERNAME/portal:latest || true'
+          - 'docker-compose run --user "$(id -u):$(id -g)" portal rake db:reset'
+          - 'docker-compose run --user "$(id -u):$(id -g)" portal rake db:migrate'
+      jobs:
+        - name: Rails Test
+          commands:
+            - 'docker-compose run --user "$(id -u):$(id -g)" portal rails test'
