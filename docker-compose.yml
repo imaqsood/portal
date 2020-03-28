@@ -32,6 +32,9 @@ services:
       - type: bind
         source: ./portal
         target: /opt/app/portal
+      - type: bind
+        source: ./bundle_cache
+        target: /usr/local/bundle
     ports:
       - '8010:8010'
     env_file:

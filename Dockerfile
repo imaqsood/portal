@@ -22,6 +22,7 @@ COPY portal/Gemfile Gemfile
 WORKDIR /opt/app/portal
 RUN bundle install
 
+RUN chown -R user:user /usr/local/
 RUN chown -R user:user /opt/app/portal
 USER user
 VOLUME ["$INSTALL_PATH/public"]
