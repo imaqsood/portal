@@ -34,7 +34,8 @@ services:
         target: /opt/app/portal
       - type: bind
         source: ./bundle_cache
-        target: /usr/local/bundle
+        target: /usr/local/bundlee
+      - bundle_cache:/usr/local/bundle
     ports:
       - '8010:8010'
     env_file:
@@ -54,6 +55,7 @@ services:
       - type: bind
         source: ./portal
         target: /opt/app/portal
+      - bundle_cache:/usr/local/bundle
     env_file:
       - .env
 
@@ -63,9 +65,17 @@ services:
       dockerfile: ./Dockerfile.nginx
     depends_on:
       - portal
+    volumes:
+      - bundle_cache:/usr/local/bundle
     ports:
       - '8020:8020'
+
+  bundle_cache:
+    image: busybox
+    volumes:
+      - bundle_cache:/bundle_cache
 
 volumes:
   portal-postgres:
   portal-redis:
+  bundle_cache:
