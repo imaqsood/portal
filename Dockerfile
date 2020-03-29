@@ -20,10 +20,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends nodejs yarn
 RUN gem install rails bundler
 COPY portal/Gemfile Gemfile
 WORKDIR /opt/app/portal
-RUN bundle install
+#RUN bundle install
+
+COPY portal/bin/start /usr/bin/
+RUN chmod +x /usr/bin/start
+ENTRYPOINT ["start"]
 
 RUN chown -R user:user /usr/local/
 RUN chown -R user:user /opt/app/portal
 USER user
+
 VOLUME ["$INSTALL_PATH/public"]
 CMD bundle exec unicorn -c config/unicorn.rb
