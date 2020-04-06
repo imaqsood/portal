@@ -41,3 +41,7 @@ DATABASE_URL=postgresql://portal:test_db_password@postgres:5432/portal?encoding=
 # reference the Redis hostname as redis.
 CACHE_URL=redis://redis:6379/0
 JOB_WORKER_URL=redis://redis:6379/0
+
+WEBPACKER_DEV_SERVER_HOST=webpacker
+NODE_ENV=development
+RAILS_ENV=development
