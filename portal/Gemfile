@@ -16,6 +16,11 @@ gem 'pg', '~> 1.2.2'
 gem 'sidekiq', '~> 6.0.6'
 gem 'redis-rails', '~> 5.0.2'
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
