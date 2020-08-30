@@ -297,3 +297,25 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
 end
+# module Rails
+#   module ConsoleMethods
+#     def self.included(_base)
+#       puts 'Enter your email:'
+#       email = gets
+#       user = User.find_by(email: email.strip)
+#       unless user
+#         puts 'Email not found in database! Exiting...'
+#         exit
+#       end
+
+#       puts 'Enter your password:'
+#       pass = $stdin.noecho(&:gets)
+#       if user.valid_password?(pass.strip)
+#         puts "Welcome #{user.email}!"
+#       else
+#         puts 'Provided password is not correct! Exiting...'
+#         exit
+#       end
+#     end
+#   end
+# end

@@ -1,5 +1,5 @@
 # Dockerfile - Development environment
-FROM ruby:2.7.0
+FROM ruby:2.7.1
 MAINTAINER maqsood.ulde@gmail.com
 
 ARG USER_ID

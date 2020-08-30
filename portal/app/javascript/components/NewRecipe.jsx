@@ -27,16 +27,18 @@ class NewRecipe extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const url = "/api/v1/recipes/create";
+    const url = "/api/v1/recipes";
     const { name, ingredients, instruction } = this.state;
 
     if (name.length == 0 || ingredients.length == 0 || instruction.length == 0)
       return;
 
     const body = {
-      name,
-      ingredients,
-      instruction: instruction.replace(/\n/g, "<br> <br>")
+      "recipe": {
+        name,
+        ingredients,
+        instruction: instruction.replace(/\n/g, "<br> <br>")
+      }
     };
 
     const token = document.querySelector('meta[name="csrf-token"]').content;

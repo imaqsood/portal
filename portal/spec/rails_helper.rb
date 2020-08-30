@@ -8,6 +8,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'simplecov'
 
 SimpleCov.start 'rails' do
+  enable_coverage :branch
   add_filter '/bin/'
   add_filter '/db/'
   add_filter '/spec/' # for rspec
@@ -16,6 +17,7 @@ end
 
 require 'rspec/rails'
 require 'shoulda/matchers'
+require 'support/factory_bot'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
