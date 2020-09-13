@@ -1,3 +1,3 @@
 class Api::V1::PostsController < ApplicationController
-  include Crud
+  include Resource::Crud
 end

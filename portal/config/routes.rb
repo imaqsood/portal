@@ -8,4 +8,5 @@ Rails.application.routes.draw do
     end
   end
   root 'homepage#index'
+  get '*path' => 'homepage#index'
 end

@@ -1,5 +1,5 @@
 class Api::V1::RecipesController < ApplicationController
-  include Crud
+  include Resource::Crud
   # def index
   #   recipe = Recipe.all.order(created_at: :desc)
   #   render json: recipe
