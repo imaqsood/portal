@@ -8,7 +8,8 @@ module Resource
     end
 
     def create
-      render_resource new_resource.save
+      new_resource.save
+      render_resource
     end
   end
 end

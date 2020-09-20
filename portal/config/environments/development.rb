@@ -1,6 +1,8 @@
 Rails.application.configure do
   config.hosts << "portal"
   logger           = ActiveSupport::Logger.new(STDOUT)
+  config.session_store :cache_store
+
   logger.formatter = config.log_formatter
   config.logger = ActiveSupport::TaggedLogging.new(logger)
   # Settings specified here will take precedence over those in config/application.rb.

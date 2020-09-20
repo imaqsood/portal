@@ -11,11 +11,12 @@ module Resource
     end
 
     def show
-      render json: resource
+      render_resource
     end
 
     def update
-      render_resource resource.update(resource_params)
+      resource.update(resource_params)
+      render_resource
     end
 
     def destroy

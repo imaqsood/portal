@@ -1,10 +1,10 @@
- require 'rails_helper'
+require 'rails_helper'
 
 RSpec.describe "Api::V1::Posts", type: :request do
 
   let(:user)               { create(:user, :confirmed) }
-  let(:valid_attributes)   { build(:post, user: user).attributes }
-  let(:invalid_attributes) { build(:post, user: nil).attributes }
+  let(:valid_attributes)   { build(:post, user: user).attributes.except('id', 'created_at', 'updated_at') }
+  let(:invalid_attributes) { build(:post, user: nil).attributes.except('id', 'created_at', 'updated_at') }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Posts", type: :request do
   describe "GET /show" do
     it "renders a successful response" do
       post = Post.create! valid_attributes
-      get api_v1_posts_url(post)
+      get api_v1_post_url(post)
       expect(response).to be_successful
     end
   end

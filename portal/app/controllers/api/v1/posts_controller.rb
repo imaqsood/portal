@@ -1,3 +1,3 @@
 class Api::V1::PostsController < ApplicationController
-  include Resource::Crud
+  resouce_config formats: :json
 end

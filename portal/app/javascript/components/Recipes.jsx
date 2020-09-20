@@ -26,6 +26,13 @@ class Recipes extends React.Component {
   render() {
     const { recipes } = this.state;
     const allRecipes = recipes.map((recipe, index) => (
+      // Demo Web component
+      // <recipe-card
+      //   key={index}
+      //   image={recipe.image}
+      //   recipeId={recipe.id}
+      //   recipeName={recipe.name}
+      // ></recipe-card>
       <div key={index} className="col-md-6 col-lg-4">
         <div className="card mb-4">
           <img
